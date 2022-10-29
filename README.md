@@ -1,6 +1,6 @@
 # BeeBrowse
 
-[BeeBrowse](https://github.com/quantified-self-tools/beebrowse) is an browser extension which extends the [Beeminder](https://www.beeminder.com) UI.
+[BeeBrowse](https://github.com/quantified-self-tools/beebrowse) is a browser extension which extends the [Beeminder](https://www.beeminder.com) UI.
 
 Features:
 
