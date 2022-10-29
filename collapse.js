@@ -5,6 +5,7 @@ import {
   getGoalElements,
   getGoalParentElement,
   goalCmp,
+  hasNoColor,
   isGoalCollapsed,
   isGoalRed
 } from './util'
@@ -95,6 +96,11 @@ function loadCollapsedState (elem) {
     elem.dataset.collapsed = 0
     LocalStorage.storeCollapsed(elem.dataset)
     return
+  } else if (!collapsed && hasNoColor(elem)) {
+    elem.dataset.collapsed = 1
+    LocalStorage.storeCollapsed(elem.dataset)
+    applyLabel(elem)
+    return;
   }
 
   elem.dataset.collapsed = collapsed

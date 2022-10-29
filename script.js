@@ -1,8 +1,10 @@
 import Collapse from './collapse'
 import Filter from './filter'
 import Hotkeys from './hotkeys'
+import Colors from './colors'
 
 try {
+  Colors.init()
   Collapse.init()
   Filter.init()
   Hotkeys.init()
