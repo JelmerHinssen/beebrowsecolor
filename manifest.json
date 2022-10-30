@@ -3,11 +3,16 @@
   "name": "BeeBrowse",
   "version": "0.0.3",
   "description": "An unofficial Beeminder browser extension.",
+  "permissions": ["contextMenus"],
   "content_scripts": [
     {
       "matches": ["*://*.beeminder.com/*"],
       "js": ["dist/script.js"],
       "css": ["dist/style.css"]
     }
-  ]
+  ],
+  "background":{
+    "service_worker": "dist/background.js",
+    "type": "module"
+  }
 }

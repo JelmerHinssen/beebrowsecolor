@@ -9,7 +9,7 @@ export default {
   },
   loadColors({slug}) {
     const ls = localStorage['BeeBrowse/colors/' + slug];
-    if (ls) return JSON.parse(ls)
+    if (ls) return JSON.parse(ls).map(parseFloat);
     else return [];
   },
   storeColors({colors, slug}) {
