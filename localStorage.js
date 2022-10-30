@@ -8,7 +8,7 @@ export default {
     localStorage['BeeBrowse/collapse/' + slug] = collapsed
   },
   loadColors({slug}) {
-    const ls = localStorage['BeeBrowse/colors/' + slug]
+    const ls = localStorage['BeeBrowse/colors/' + slug];
     if (ls) return JSON.parse(ls)
     else return [];
   },

@@ -49,9 +49,11 @@ function removeColors(goal) {
 }
 
 function getGoalColors(goal) {
-    let colors = LocalStorage.loadColors(goal);
+    let colors = LocalStorage.loadColors(goal.dataset);
     if (!colors || colors.length === 0) {
         colors = DEFAULT_COLORS;
+    } else {
+        colors = colors.map((x) => x === null ? Infinity : x);
     }
     return colors;
 }
