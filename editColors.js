@@ -25,12 +25,14 @@ window.onload = async () => {
     console.log(x);
     let d = JSON.parse(x);
     console.log(d);
-    let {slug, colors, tabid} = d;
+    let {slug, colors, tabid, autohide} = d;
     document.getElementById("goal-slug").innerText = slug;
     setColors(colors);
+    document.getElementById("autohide").checked = autohide;
     document.getElementById("save").onclick = () => {
         let colors = getColors();
-        let saveData = {msg: "saveColors", slug, colors};
+        let autohide = document.getElementById("autohide").checked
+        let saveData = {msg: "saveColors", slug, colors, autohide};
         chrome.tabs.sendMessage(tabid, saveData);
         closeWindow();
     };

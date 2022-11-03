@@ -30,6 +30,14 @@ export function hasNoColor(elem) {
   return elem.classList.contains("nocolor");
 }
 
+export function hasTodayta(elem) {
+  console.log(elem);
+  
+  let todayta = elem.querySelector(".todayta");
+  console.log(todayta);
+  return todayta && !todayta.classList.contains("hidden");
+}
+
 export function goalCmp ({ dataset: x }, { dataset: y }) {
   if (+x.collapsed === +y.collapsed) {
     return +x.losedate === +y.losedate ? 0 : +x.losedate > +y.losedate ? 1 : -1

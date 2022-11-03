@@ -6,6 +6,7 @@ import {
   getGoalParentElement,
   goalCmp,
   hasNoColor,
+  hasTodayta,
   isGoalCollapsed,
   isGoalRed
 } from './util'
@@ -90,17 +91,17 @@ function isBeeminderExpanded (goal) {
 }
 
 function loadCollapsedState (elem) {
-  const collapsed = LocalStorage.loadCollapsed(elem.dataset)
+  let collapsed = LocalStorage.loadCollapsed(elem.dataset)
 
   if (collapsed && isGoalRed(elem)) {
-    elem.dataset.collapsed = 0
-    LocalStorage.storeCollapsed(elem.dataset)
-    return
-  } else if (!collapsed && hasNoColor(elem)) {
-    elem.dataset.collapsed = 1
-    LocalStorage.storeCollapsed(elem.dataset)
-    applyLabel(elem)
-    return;
+    elem.dataset.collapsed = 0;
+    collapsed = 0;
+    LocalStorage.storeCollapsed(elem.dataset);
+  } else if (!collapsed && (
+        hasNoColor(elem) || (
+        LocalStorage.loadHideWithData(elem.dataset) && hasTodayta(elem))
+      )) {
+    collapsed = 1
   }
 
   elem.dataset.collapsed = collapsed

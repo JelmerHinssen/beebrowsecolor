@@ -5,7 +5,7 @@ import {
 } from './util'
 
 const COLOR_NAMES = ["red", "orange", "blue", "green"];
-const DEFAULT_COLORS = [1, 2, 3, Infinity];
+const DEFAULT_COLORS = [1, 3, 7, Infinity];
 let activeGoal = null;
 
 export default {
@@ -14,10 +14,15 @@ export default {
         const goalElements = getGoalElements();
         chrome.runtime.onMessage.addListener((msg, sender, sendResponse)=>{
             if (msg.msg === "openContextMenu") {
-                sendResponse({slug: activeGoal.dataset.slug, colors: getGoalColors(activeGoal).map(x=>"" + x)});
+                sendResponse({
+                    slug: activeGoal.dataset.slug, 
+                    colors: getGoalColors(activeGoal).map(x=>"" + x),
+                    autohide: LocalStorage.loadHideWithData(activeGoal.dataset)
+                });
             } else if (msg.msg === "saveColors") {
                 console.log(msg);
                 LocalStorage.storeColors(msg);
+                LocalStorage.storeHideWithData(msg);
             }
         });
 
