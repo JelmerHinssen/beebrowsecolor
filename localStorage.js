@@ -7,11 +7,6 @@ export default {
   storeCollapsed ({ collapsed, slug }) {
     localStorage['BeeBrowse/collapse/' + slug] = collapsed
   },
-  loadColors({slug}) {
-    const ls = localStorage['BeeBrowse/colors/' + slug];
-    if (ls) return JSON.parse(ls).map(parseFloat);
-    else return [];
-  },
   storeColors({colors, slug}) {
     localStorage['BeeBrowse/colors/' + slug] = JSON.stringify(colors);
   },
@@ -23,5 +18,20 @@ export default {
   storeHideWithData({autohide, slug}) {
     localStorage['BeeBrowse/todaytahide/' + slug] = +autohide;
     console.log(localStorage['BeeBrowse/todaytahide/' + slug]);
+  },
+  getGoalColors(goal) {
+    let colors = loadColors(goal.dataset);
+    if (!colors || colors.length === 0) {
+        colors = DEFAULT_COLORS;
+    } else {
+        colors = colors.map((x) => x === null ? Infinity : x);
+    }
+    return colors;
   }
+}
+
+function loadColors({slug}) {
+  const ls = localStorage['BeeBrowse/colors/' + slug];
+  if (ls) return JSON.parse(ls).map(parseFloat);
+  else return [];
 }

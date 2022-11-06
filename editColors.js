@@ -32,7 +32,7 @@ window.onload = async () => {
     document.getElementById("save").onclick = () => {
         let colors = getColors();
         let autohide = document.getElementById("autohide").checked
-        let saveData = {msg: "saveColors", slug, colors, autohide};
+        let saveData = {msg: "saveGoalInfo", slug, colors, autohide};
         chrome.tabs.sendMessage(tabid, saveData);
         closeWindow();
     };

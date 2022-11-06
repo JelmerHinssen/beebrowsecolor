@@ -6,30 +6,13 @@ import {
 
 const COLOR_NAMES = ["red", "orange", "blue", "green"];
 const DEFAULT_COLORS = [1, 3, 7, Infinity];
-let activeGoal = null;
 
 export default {
     init() {
         if (!getGoalParentElement()) return;
         const goalElements = getGoalElements();
-        chrome.runtime.onMessage.addListener((msg, sender, sendResponse)=>{
-            if (msg.msg === "openContextMenu") {
-                sendResponse({
-                    slug: activeGoal.dataset.slug, 
-                    colors: getGoalColors(activeGoal).map(x=>"" + x),
-                    autohide: LocalStorage.loadHideWithData(activeGoal.dataset)
-                });
-            } else if (msg.msg === "saveColors") {
-                console.log(msg);
-                LocalStorage.storeColors(msg);
-                LocalStorage.storeHideWithData(msg);
-            }
-        });
 
         goalElements.forEach(goal => {
-            goal.addEventListener("contextmenu", (e)=>{
-                activeGoal = goal;
-            });
             removeColors(goal);
             addColors(goal);
         })
@@ -45,7 +28,7 @@ function getDaysUntilDeadline(goal) {
 
 function addColors(goal) {
     let daysUntilDeadline = getDaysUntilDeadline(goal);
-    let colors = getGoalColors(goal);
+    let colors = LocalStorage.getGoalColors(goal);
     let hasColor = false;
     for (let i = 0; i < Math.min(COLOR_NAMES.length, colors.length); i++) {
         if (daysUntilDeadline < colors[i]) {
@@ -65,12 +48,3 @@ function removeColors(goal) {
     }
 }
 
-function getGoalColors(goal) {
-    let colors = LocalStorage.loadColors(goal.dataset);
-    if (!colors || colors.length === 0) {
-        colors = DEFAULT_COLORS;
-    } else {
-        colors = colors.map((x) => x === null ? Infinity : x);
-    }
-    return colors;
-}

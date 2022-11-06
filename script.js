@@ -2,8 +2,10 @@ import Collapse from './collapse'
 import Filter from './filter'
 import Hotkeys from './hotkeys'
 import Colors from './colors'
+import ContextMenu from './contextmenu'
 
 try {
+  ContextMenu.init()
   Colors.init()
   Collapse.init()
   Filter.init()
