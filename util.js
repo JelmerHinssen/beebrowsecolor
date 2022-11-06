@@ -31,10 +31,7 @@ export function hasNoColor(elem) {
 }
 
 export function hasTodayta(elem) {
-  console.log(elem);
-  
   let todayta = elem.querySelector(".todayta");
-  console.log(todayta);
   return todayta && !todayta.classList.contains("hidden");
 }
 

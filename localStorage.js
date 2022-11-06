@@ -17,7 +17,6 @@ export default {
   },
   storeHideWithData({autohide, slug}) {
     localStorage['BeeBrowse/todaytahide/' + slug] = +autohide;
-    console.log(localStorage['BeeBrowse/todaytahide/' + slug]);
   },
   getGoalColors(goal) {
     let colors = loadColors(goal.dataset);
@@ -27,6 +26,14 @@ export default {
         colors = colors.map((x) => x === null ? Infinity : x);
     }
     return colors;
+  },
+  storeHideOn({slug, hideOn}) {
+    localStorage['BeeBrowse/hideOn/' + slug] = JSON.stringify(hideOn);
+  },
+  loadHideOn({slug}) {
+    const ls = localStorage['BeeBrowse/hideOn/' + slug];
+    if (ls) return JSON.parse(ls);
+    else return [0, 0, 0, 0, 0, 0, 0];
   }
 }
 

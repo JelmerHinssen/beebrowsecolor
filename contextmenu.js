@@ -30,11 +30,13 @@ function openContextMenu(sendResponse) {
     sendResponse({
         slug: activeGoal.dataset.slug, 
         colors: LocalStorage.getGoalColors(activeGoal).map(x=>"" + x),
-        autohide: LocalStorage.loadHideWithData(activeGoal.dataset)
+        autohide: LocalStorage.loadHideWithData(activeGoal.dataset),
+        hideOn: LocalStorage.loadHideOn(activeGoal.dataset)
     });
 }
 
 function saveGoalInfo(msg) {
     LocalStorage.storeColors(msg);
-        LocalStorage.storeHideWithData(msg);
+    LocalStorage.storeHideWithData(msg);
+    LocalStorage.storeHideOn(msg);
 }

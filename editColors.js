@@ -11,7 +11,6 @@ function getColors() {
     for (let x of ["red", "orange", "blue", "green"]) {
         colors.push(document.getElementById(x).value);
     }
-    console.log(colors);
     return colors;
 }
 
@@ -20,19 +19,35 @@ async function closeWindow() {
     chrome.windows.remove(windowID);
 }
 
+function setHideOn(hideOn) {
+    let i = 0;
+    for (let day of ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) {
+        document.getElementById("hideon-" + day).checked = hideOn[i];
+        i++;
+    }
+}
+
+function getHideOn() {
+    let ans = [];
+    for (let day of ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) {
+        ans.push(document.getElementById("hideon-" + day).checked);
+    }
+    return ans;
+}
+
 window.onload = async () => {
     let x = decodeURIComponent(window.location.search.substring(1));
-    console.log(x);
     let d = JSON.parse(x);
-    console.log(d);
-    let {slug, colors, tabid, autohide} = d;
+    let {slug, colors, tabid, autohide, hideOn} = d;
     document.getElementById("goal-slug").innerText = slug;
     setColors(colors);
+    setHideOn(hideOn);
     document.getElementById("autohide").checked = autohide;
     document.getElementById("save").onclick = () => {
         let colors = getColors();
         let autohide = document.getElementById("autohide").checked
-        let saveData = {msg: "saveGoalInfo", slug, colors, autohide};
+        let hideOn = getHideOn();
+        let saveData = {msg: "saveGoalInfo", slug, colors, autohide, hideOn};
         chrome.tabs.sendMessage(tabid, saveData);
         closeWindow();
     };

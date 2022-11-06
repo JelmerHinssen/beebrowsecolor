@@ -5,7 +5,6 @@ chrome.contextMenus.create({
     contexts: ["all"]
 });
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    console.log({ info, tab });
     chrome.tabs.sendMessage(tab.id, {msg: "openContextMenu"}, response => {
         let data = JSON.stringify({
             ...response,
