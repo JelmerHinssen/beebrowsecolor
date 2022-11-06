@@ -37,9 +37,17 @@ function addColors(goal) {
             break;
         }
     }
-    if (!hasColor || shouldHideToday(goal)) {
+    if (!hasColor || shouldHideToday(goal) || shouldHideNow(goal)) {
         goal.classList.add("nocolor");
     }
+}
+
+function shouldHideNow(goal) {
+    let now = new Date();
+    let hideAfter = LocalStorage.loadHideAfter(goal.dataset);
+    if (now.getHours() > hideAfter[0]) return true;
+    else if (now.getHours() == hideAfter[0] && now.getMinutes() > hideAfter[1]) return true;
+    return false;
 }
 
 function shouldHideToday(goal) {
