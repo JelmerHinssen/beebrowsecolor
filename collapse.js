@@ -102,6 +102,9 @@ function loadCollapsedState (elem) {
         LocalStorage.loadHideWithData(elem.dataset) && hasTodayta(elem))
       )) {
     collapsed = 1
+    if (isBeeminderExpanded(elem)) {
+      elem.querySelector('.expanded-toggle').click()
+    }
   }
 
   elem.dataset.collapsed = collapsed
