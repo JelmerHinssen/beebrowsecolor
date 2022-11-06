@@ -37,9 +37,16 @@ function addColors(goal) {
             break;
         }
     }
-    if (!hasColor) {
+    if (!hasColor || shouldHideToday(goal)) {
         goal.classList.add("nocolor");
     }
+}
+
+function shouldHideToday(goal) {
+    let now = new Date();
+    let day = (now.getDay() + 6) % 7;
+    let hideOn = LocalStorage.loadHideOn(goal.dataset);
+    return hideOn[day];
 }
 
 function removeColors(goal) {
