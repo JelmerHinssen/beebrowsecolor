@@ -34,6 +34,14 @@ export default {
     const ls = localStorage['BeeBrowse/hideOn/' + slug];
     if (ls) return JSON.parse(ls);
     else return [0, 0, 0, 0, 0, 0, 0];
+  },
+  storeHideAfter({slug, hideAfter}) {
+    localStorage['BeeBrowse/hideAfter/' + slug] = JSON.stringify(hideAfter);
+  },
+  loadHideAfter({slug}) {
+    const ls = localStorage['BeeBrowse/hideAfter/' + slug];
+    if (ls) return JSON.parse(ls);
+    else return [23, 59];
   }
 }
 

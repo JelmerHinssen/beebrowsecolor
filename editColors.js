@@ -35,19 +35,37 @@ function getHideOn() {
     return ans;
 }
 
+function setHideAfter(hideAfter) {
+    let i = 0;
+    for (let day of ["hour", "minute"]) {
+        document.getElementById("hideafter-" + day).value = hideAfter[i];
+        i++;
+    }
+}
+
+function getHideAfter() {
+    let ans = [];
+    for (let day of ["hour", "minute"]) {
+        ans.push(document.getElementById("hideafter-" + day).value);
+    }
+    return ans;
+}
+
 window.onload = async () => {
     let x = decodeURIComponent(window.location.search.substring(1));
     let d = JSON.parse(x);
-    let {slug, colors, tabid, autohide, hideOn} = d;
+    let {slug, colors, tabid, autohide, hideOn, hideAfter} = d;
     document.getElementById("goal-slug").innerText = slug;
     setColors(colors);
     setHideOn(hideOn);
+    setHideAfter(hideAfter);
     document.getElementById("autohide").checked = autohide;
     document.getElementById("save").onclick = () => {
         let colors = getColors();
         let autohide = document.getElementById("autohide").checked
         let hideOn = getHideOn();
-        let saveData = {msg: "saveGoalInfo", slug, colors, autohide, hideOn};
+        let hideAfter = getHideAfter();
+        let saveData = {msg: "saveGoalInfo", slug, colors, autohide, hideOn, hideAfter};
         chrome.tabs.sendMessage(tabid, saveData);
         closeWindow();
     };
