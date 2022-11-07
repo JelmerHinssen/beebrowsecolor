@@ -1,3 +1,4 @@
+const DEFAULT_COLORS = [1, 3, 7, Infinity];
 export default {
   loadCollapsed ({ slug }) {
     const ls = localStorage['BeeBrowse/collapse/' + slug]

@@ -5,7 +5,6 @@ import {
 } from './util'
 
 const COLOR_NAMES = ["red", "orange", "blue", "green"];
-const DEFAULT_COLORS = [1, 3, 7, Infinity];
 
 export default {
     init() {
