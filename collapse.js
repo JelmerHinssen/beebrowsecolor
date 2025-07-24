@@ -1,4 +1,4 @@
-import LocalStorage from './localStorage'
+import LocalStorage from "./localStorage";
 import {
   createElement,
   createGoalLabel,
@@ -7,138 +7,154 @@ import {
   goalCmp,
   hasNoColor,
   hasTodayta,
+  hasYesterdayta,
   isGoalCollapsed,
-  isGoalRed
-} from './util'
+  isGoalRed,
+} from "./util";
 
 export default {
-  init () {
-    if (!getGoalParentElement()) return
+  init() {
+    if (!getGoalParentElement()) return;
 
     // If we've already added the collapse buttons,
     // we want to first remove the old buttons before
     // adding new ones.
-    this.undo()
+    this.undo();
 
-    const goalElements = getGoalElements()
+    const goalElements = getGoalElements();
 
-    goalElements.forEach(elem => {
-      addCollapseButton(elem)
-      loadCollapsedState(elem)
-      addCollapseListener(elem)
-    })
+    goalElements.forEach((elem) => {
+      addCollapseButton(elem);
+      loadCollapsedState(elem);
+      addCollapseListener(elem);
+    });
 
-    renderGoalList()
+    renderGoalList();
   },
-  undo () {
-    const parentElement = getGoalParentElement()
-    removeCollapseButtons(parentElement)
-    removeLabels(parentElement)
+  undo() {
+    const parentElement = getGoalParentElement();
+    removeCollapseButtons(parentElement);
+    removeLabels(parentElement);
   },
-  uncollapseAll () {
-    getGoalElements()
-      .filter(isGoalCollapsed)
-      .forEach(toggleCollapseGoal)
-  }
-}
+  uncollapseAll() {
+    getGoalElements().filter(isGoalCollapsed).forEach(toggleCollapseGoal);
+  },
+};
 
-function addCollapseButton (elem) {
+function addCollapseButton(elem) {
   if (isGoalRed(elem)) {
-    return
+    return;
   }
 
-  const summary = elem.querySelector('.summary')
+  const summary = elem.querySelector(".summary");
   if (summary) {
-    summary.append(createElement('a', 'collapse', {
-      href: '#',
-      className: 'collapse-button'
-    }))
+    summary.append(
+      createElement("a", "collapse", {
+        href: "#",
+        className: "collapse-button",
+      })
+    );
   }
 }
 
-function addCollapseListener (elem) {
-  elem.addEventListener('click', event => {
+function addCollapseListener(elem) {
+  elem.addEventListener("click", (event) => {
     try {
-      if (Array.from(event.target.classList).includes('collapse-button') || isGoalCollapsed(elem)) {
-        event.preventDefault()
-        toggleCollapseGoal(elem)
+      if (
+        Array.from(event.target.classList).includes("collapse-button") ||
+        isGoalCollapsed(elem)
+      ) {
+        event.preventDefault();
+        toggleCollapseGoal(elem);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  })
+  });
 }
 
-function toggleCollapseGoal (elem) {
-  const collapsed = isGoalCollapsed(elem)
+function toggleCollapseGoal(elem) {
+  const collapsed = isGoalCollapsed(elem);
 
   if (!collapsed && isBeeminderExpanded(elem)) {
-    elem.querySelector('.expanded-toggle').click()
+    elem.querySelector(".expanded-toggle").click();
   }
 
-  elem.dataset.collapsed = collapsed ? 0 : 1
-  LocalStorage.storeCollapsed(elem.dataset)
+  elem.dataset.collapsed = collapsed ? 0 : 1;
+  LocalStorage.storeCollapsed(elem.dataset);
 
-  renderGoalList()
+  renderGoalList();
 
-  applyLabel(elem)
+  applyLabel(elem);
 }
 
-function isBeeminderExpanded (goal) {
-  const expanded = localStorage['com.beeminder.dashboard.expandedList'] || ''
-  const expandedList = expanded.split(',')
-  return expandedList.includes(goal.dataset.slug)
+function isBeeminderExpanded(goal) {
+  const expanded = localStorage["com.beeminder.dashboard.expandedList"] || "";
+  const expandedList = expanded.split(",");
+  return expandedList.includes(goal.dataset.slug);
 }
 
-function loadCollapsedState (elem) {
-  let collapsed = LocalStorage.loadCollapsed(elem.dataset)
+function loadCollapsedState(elem) {
+  let collapsed = LocalStorage.loadCollapsed(elem.dataset);
+  const { yesterhide, yesterhide_hour, yesterhide_minute } =
+    LocalStorage.loadYesterHide(elem.dataset);
+  let do_yesterhide = false;
+  console.log({ yesterhide, yesterhide_hour, yesterhide_minute });
+  if (+yesterhide) {
+    const now = new Date();
+    const limit = new Date();
+    limit.setHours(yesterhide_hour);
+    limit.setMinutes(yesterhide_minute);
+    console.log({ now, limit });
+    if (hasYesterdayta(elem) && now < limit) {
+      do_yesterhide = true;
+    }
+  }
 
   if (collapsed && isGoalRed(elem)) {
     elem.dataset.collapsed = 0;
     collapsed = 0;
     LocalStorage.storeCollapsed(elem.dataset);
-  } else if (!collapsed && (
-        hasNoColor(elem) || (
-        LocalStorage.loadHideWithData(elem.dataset) && hasTodayta(elem))
-      )) {
-    collapsed = 1
+  } else if (
+    !collapsed &&
+    (hasNoColor(elem) ||
+      (LocalStorage.loadHideWithData(elem.dataset) && hasTodayta(elem)) ||
+      do_yesterhide)
+  ) {
+    collapsed = 1;
     if (isBeeminderExpanded(elem)) {
-      elem.querySelector('.expanded-toggle').click()
+      elem.querySelector(".expanded-toggle").click();
     }
   }
 
-  elem.dataset.collapsed = collapsed
+  elem.dataset.collapsed = collapsed;
 
-  applyLabel(elem)
+  applyLabel(elem);
 }
 
-function renderGoalList () {
-  const elems = getGoalElements()
-  elems.sort(goalCmp)
+function renderGoalList() {
+  const elems = getGoalElements();
+  elems.sort(goalCmp);
 
-  const goalParent = getGoalParentElement()
-  elems.forEach(elem => goalParent.append(elem))
+  const goalParent = getGoalParentElement();
+  elems.forEach((elem) => goalParent.append(elem));
 }
 
-function applyLabel (elem) {
-  removeLabels(elem)
+function applyLabel(elem) {
+  removeLabels(elem);
 
   if (isGoalCollapsed(elem)) {
-    const slugElement = elem.querySelector('.descriptors .slug')
+    const slugElement = elem.querySelector(".descriptors .slug");
     if (slugElement) {
-      slugElement.append(createGoalLabel(elem.dataset))
+      slugElement.append(createGoalLabel(elem.dataset));
     }
   }
 }
 
-function removeCollapseButtons (elem) {
-  elem
-    .querySelectorAll('.collapse-button')
-    .forEach(elem => elem.remove())
+function removeCollapseButtons(elem) {
+  elem.querySelectorAll(".collapse-button").forEach((elem) => elem.remove());
 }
 
-function removeLabels (elem) {
-  elem
-    .querySelectorAll('.small-description')
-    .forEach(elem => elem.remove())
+function removeLabels(elem) {
+  elem.querySelectorAll(".small-description").forEach((elem) => elem.remove());
 }

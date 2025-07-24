@@ -1,30 +1,61 @@
 <html>
-    <head>
-    </head>
+    <head></head>
     <body>
         <form>
-            <label for="goal-slug">Goal:</label><span id="goal-slug"></span><br/>
-            <label for="red">Red:</label> <input type="text" id="red" name="red"/><br/>
-            <label for="orange">Orange:</label> <input type="text" id="orange" name="orange"/><br/>
-            <label for="blue">Blue:</label> <input type="text" id="blue" name="blue"/><br/>
-            <label for="green">Green:</label> <input type="text" id="green" name="green"/><br/>
-            <label for="autohide">Autohide with data:</label> <input type="checkbox" id="autohide" name="autohide"/><br/>
-            <label for="hideon">Hide on: </label>
-                <input type="checkbox" name="hideon-mon" id="hideon-mon">Monday</input>
-                <input type="checkbox" name="hideon-tue" id="hideon-tue">Tuesday</input>
-                <input type="checkbox" name="hideon-wed" id="hideon-wed">Wednesday</input>
-                <input type="checkbox" name="hideon-thu" id="hideon-thu">Thursday</input>
-                <input type="checkbox" name="hideon-fri" id="hideon-fri">Friday</input>
-                <input type="checkbox" name="hideon-sat" id="hideon-sat">Saturday</input>
-                <input type="checkbox" name="hideon-sun" id="hideon-sun">Sunday</input>
-            <br/>
-            <label for="hideafter">Hide after:</label>
-                <input type="number" name="hideafter-hour" id="hideafter-hour"/>
-                :
-                <input type="number" name="hideafter-minute" id="hideafter-minute"/>
-            <br/>
-            <button type="button" id="save">Save</button>
-        </form>
-        <script type="module" src="editColors.js"></script>
-    </body>
+            <label for="goal-slug">Goal:</label>
+            <span id="goal-slug"></span>
+            <br />
+            <label for="red">Red:</label>
+            <input type="text" id="red" name="red" />
+            <br />
+            <label for="orange">Orange:</label>
+            <input type="text" id="orange" name="orange" />
+            <br />
+            <label for="blue">Blue:</label>
+            <input type="text" id="blue" name="blue" />
+            <br />
+            <label for="green">Green:</label>
+            <input type="text" id="green" name="green" />
+            <br />
+            <label for="autohide">Autohide with data:</label>
+            <input type="checkbox" id="autohide" name="autohide" />
+            <br />
+            <label for="yesterhide">Autohide with yesterdata before</label>
+            <input type="checkbox" id="yesterhide" name="yesterhide" />
+            <input type="number" name="yesterhide-hour" id="yesterhide-hour">
+            :
+            <input type="yesterhide-minute" id="yesterhide-minute">
+            <br />
+            <label for="hideon">Hide on:</label>
+            <input type="checkbox" name="hideon-mon" id="hideon-mon">
+            Monday
+        </input>
+        <input type="checkbox" name="hideon-tue" id="hideon-tue">
+        Tuesday
+    </input>
+    <input type="checkbox" name="hideon-wed" id="hideon-wed">
+    Wednesday
+</input>
+<input type="checkbox" name="hideon-thu" id="hideon-thu">
+Thursday
+</input>
+<input type="checkbox" name="hideon-fri" id="hideon-fri">
+Friday
+</input>
+<input type="checkbox" name="hideon-sat" id="hideon-sat">
+Saturday
+</input>
+<input type="checkbox" name="hideon-sun" id="hideon-sun">
+Sunday
+</input>
+<br />
+<label for="hideafter">Hide after:</label>
+<input type="number" name="hideafter-hour" id="hideafter-hour" />
+:
+<input type="number" name="hideafter-minute" id="hideafter-minute" />
+<br />
+<button type="button" id="save">Save</button>
+</form>
+<script type="module" src="editColors.js"></script>
+</body>
 </html>

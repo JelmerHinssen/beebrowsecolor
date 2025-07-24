@@ -1,29 +1,29 @@
-const MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24
+const MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
 
-export function futureDays (date) {
-  return Math.floor((date * 1000 - Date.now()) / MILLISECONDS_IN_DAY)
+export function futureDays(date) {
+  return Math.floor((date * 1000 - Date.now()) / MILLISECONDS_IN_DAY);
 }
 
-export function createElement (tag, text = null, props = {}) {
-  const elem = document.createElement(tag)
+export function createElement(tag, text = null, props = {}) {
+  const elem = document.createElement(tag);
   if (text) {
-    elem.textContent = text
+    elem.textContent = text;
   }
   for (const [key, value] of Object.entries(props)) {
-    elem[key] = value
+    elem[key] = value;
   }
-  return elem
+  return elem;
 }
 
-export function createGoalLabel ({ baremin, losedate }) {
-  const text = ` (${baremin}/${futureDays(losedate)}d)`
-  return createElement('span', text, {
-    className: 'small-description'
-  })
+export function createGoalLabel({ baremin, losedate }) {
+  const text = ` (${baremin}/${futureDays(losedate)}d)`;
+  return createElement("span", text, {
+    className: "small-description",
+  });
 }
 
-export function isGoalRed (elem) {
-  return Array.from(elem.classList).includes('red')
+export function isGoalRed(elem) {
+  return Array.from(elem.classList).includes("red");
 }
 
 export function hasNoColor(elem) {
@@ -35,23 +35,34 @@ export function hasTodayta(elem) {
   return todayta && !todayta.classList.contains("hidden");
 }
 
-export function goalCmp ({ dataset: x }, { dataset: y }) {
+export function hasYesterdayta(elem) {
+  const yesterday = new Date(Date.now() - 86400000).getDate();
+  const lastData = parseInt(
+    elem.querySelector(".last-datapoint").textContent.trim()
+  );
+  console.log({ yesterday, lastData });
+  return lastData >= yesterday;
+}
+
+export function goalCmp({ dataset: x }, { dataset: y }) {
   if (+x.collapsed === +y.collapsed) {
-    return +x.losedate === +y.losedate ? 0 : +x.losedate > +y.losedate ? 1 : -1
+    return +x.losedate === +y.losedate ? 0 : +x.losedate > +y.losedate ? 1 : -1;
   } else {
-    if (+x.collapsed) return 1
-    else return -1
+    if (+x.collapsed) return 1;
+    else return -1;
   }
 }
 
-export function getGoalElements () {
-  return Array.from(document.querySelectorAll('.dashboard > .panel > .goals > .goal'))
+export function getGoalElements() {
+  return Array.from(
+    document.querySelectorAll(".dashboard > .panel > .goals > .goal")
+  );
 }
 
-export function getGoalParentElement () {
-  return document.querySelector('.dashboard > .panel > .goals')
+export function getGoalParentElement() {
+  return document.querySelector(".dashboard > .panel > .goals");
 }
 
-export function isGoalCollapsed (elem) {
-  return Boolean(+elem.dataset.collapsed)
+export function isGoalCollapsed(elem) {
+  return Boolean(+elem.dataset.collapsed);
 }

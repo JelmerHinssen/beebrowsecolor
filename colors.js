@@ -61,4 +61,3 @@ function removeColors(goal) {
         goal.classList.remove(x);
     }
 }
-

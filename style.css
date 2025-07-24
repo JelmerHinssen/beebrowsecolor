@@ -37,7 +37,7 @@
 }
 
 .goal[data-collapsed="1"] > .goal-data > .row {
-  margin-top: 2px !important;
+  margin-top: 0px !important;
 }
 
 .filter-box {
