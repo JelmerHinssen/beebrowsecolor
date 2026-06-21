@@ -99,6 +99,7 @@ function loadCollapsedState(elem) {
   const { yesterhide, yesterhide_hour, yesterhide_minute } =
     LocalStorage.loadYesterHide(elem.dataset);
   let do_yesterhide = false;
+  let dont_yesterhide = false;
   console.log({ yesterhide, yesterhide_hour, yesterhide_minute });
   if (+yesterhide) {
     const now = new Date();
@@ -109,9 +110,15 @@ function loadCollapsedState(elem) {
     if (hasYesterdayta(elem) && now < limit) {
       do_yesterhide = true;
     }
+    if (now > limit) {
+      dont_yesterhide = true;
+    }
+  }
+  if (LocalStorage.loadHideWithData(elem.dataset) && hasTodayta(elem)) {
+    dont_yesterhide = false;
   }
 
-  if (collapsed && isGoalRed(elem)) {
+  if (collapsed && (isGoalRed(elem) || dont_yesterhide)) {
     elem.dataset.collapsed = 0;
     collapsed = 0;
     LocalStorage.storeCollapsed(elem.dataset);

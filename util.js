@@ -36,12 +36,16 @@ export function hasTodayta(elem) {
 }
 
 export function hasYesterdayta(elem) {
-  const yesterday = new Date(Date.now() - 86400000).getDate();
+  const now = new Date();
   const lastData = parseInt(
     elem.querySelector(".last-datapoint").textContent.trim()
   );
-  console.log({ yesterday, lastData });
-  return lastData >= yesterday;
+  const lastDataDate = new Date(now.getFullYear(), now.getMonth(), lastData);
+  if (lastDataDate > now) {
+    lastDataDate.setMonth(lastDataDate.getMonth() - 1);
+  }
+  const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  return lastDataDate >= yesterday;
 }
 
 export function goalCmp({ dataset: x }, { dataset: y }) {
